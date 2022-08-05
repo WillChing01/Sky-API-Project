@@ -1,0 +1,11 @@
+.card-wrapper {
+    border: 1px solid grey;
+    border-radius: 1rem;
+    padding: 1rem 1rem;
+    margin: 1rem 1rem;
+    align-items: center;
+}
+
+.italics {
+    font-style: italic;
+}
