@@ -1,8 +1,16 @@
+import React from 'react';
 import {useNavigate} from 'react-router-dom';
 
 import './Card.css';
 
-const Card = ({id, title, body, email}) => {
+type Props = {
+    id: string,
+    title: string,
+    body: string,
+    email: string
+};
+
+const Card: React.FC<Props> = ({id, title, body, email}) => {
 
     let navigate = useNavigate();
 
