@@ -9,6 +9,7 @@ const Post = () => {
 
     const postQuery = useQuery('https://jsonplaceholder.typicode.com/posts/'+id);
     const commentsQuery = useQuery('https://jsonplaceholder.typicode.com/posts/'+id+'/comments');
+    
     if (postQuery.error || commentsQuery.error) return 'Something went wrong!';
 
     if (postQuery.isLoading || commentsQuery.isLoading || !postQuery.data || !commentsQuery.data) return 'Loading...';
@@ -22,11 +23,14 @@ const Post = () => {
 
             <h3>Comments</h3>
 
-            <ul>
-                {commentsQuery.data.map(({name, body, email, id}) =>
-                    <Card key={id} title={name} body={body} email={email}/>
-                )}
-            </ul>
+            <div>
+                {
+                commentsQuery.data.map(
+                    ({name, body, email, id}) =>
+                    <Card key={id} id={id} title={name} body={body} email={email}/>
+                )
+                }
+            </div>
         </div>
     );
 };

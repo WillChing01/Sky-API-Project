@@ -15,9 +15,10 @@ const Posts = () => {
     return (
         <div className='community'>
             <h1 className='title' data-testid='title'>Posts</h1>
-            {data ? 
-            data.slice(0,limit).map(({title, body, id}) => <Card key={id} title={title} body={body} />) : 
-            'No results found.'}
+            {
+            data ? data.slice(0,limit).map(({title, body, id}) => <Card key={id} id={id} title={title} body={body} />) 
+                 : 'No results found.'
+            }
         </div>
     );
 };
