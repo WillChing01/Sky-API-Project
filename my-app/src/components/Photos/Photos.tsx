@@ -2,6 +2,8 @@ import React from 'react';
 import useQuery from '../../hooks/useQuery';
 import PhotoCard from '../PhotoCard/PhotoCard';
 
+import './Photos.css';
+
 type PhotoData = {
     albumId: number,
     id: number,
@@ -22,7 +24,7 @@ const Photos: React.FC = () => {
     return (
         <div className='community'>
             <h1 className='title' data-testid='title'>Photos</h1>
-            <div className='title'>
+            <div className='grid-container'>
                 {
                 data ? data.slice(0,Math.min(limit,data.length)).map(({thumbnailUrl}) => <PhotoCard key={thumbnailUrl} src={thumbnailUrl} />) 
                     : 'No results found.'

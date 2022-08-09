@@ -1,0 +1,6 @@
+.padded-border {
+    margin: 1%;
+    padding: 1%;
+    border: solid grey;
+    border-radius: 1rem;
+}
