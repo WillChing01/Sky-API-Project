@@ -1,17 +1,32 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios';
 
-const useQuery = (url) => {
-    const [posts, setPosts] = useState(null);
+type PostData = {
+    title: string,
+    body: string,
+    userId: number
+};
+
+type ReturnData = {
+    id: number,
+    title: string,
+    body: string,
+    userId: number
+};
+
+const useCreate : (postData: PostData) => {isLoading: boolean; data: ReturnData; error: string;} = (postData) => {
+    const [data, setData] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState('');
+
+    const url = 'https://jsonplaceholder.typicode.com/posts';
 
     useEffect(() => {
         setIsLoading(true);
-        axios.get(url)
+        axios.post(url, postData)
         .then((response) => {
             //console.log(response.data);
-            setPosts(response.data);
+            setData([response.data]);
             setIsLoading(false);
         })
         .catch((error) => {
@@ -24,13 +39,13 @@ const useQuery = (url) => {
             }
             setError(error);
         });
-    },[]);
+    },[postData]);
 
     return {
         isLoading: isLoading,
-        data: posts,
+        data: data,
         error: error
     };
 };
 
-export default useQuery;
+export default useCreate;

@@ -1,0 +1,15 @@
+.nav-style {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    border-bottom: solid black 1px;
+    background-color: white;
+}
+
+.center-table {
+    margin: 1.5rem auto;
+}
+
+th {
+    padding: 0 1rem;
+}
