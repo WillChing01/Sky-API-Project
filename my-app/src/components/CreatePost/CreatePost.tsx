@@ -1,14 +1,15 @@
 import React from 'react';
 import {useState} from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router';
 
 //import useCreate from '../../hooks/useCreate';
 
 const CreatePost: React.FC = () => {
 
     const [formInfo, setFormInfo] = useState({});
-    const [postTitle, setPostTitle] = useState('');
-    const [postBody, setPostBody] = useState('');
+
+    let navigate = useNavigate();
 
     const updateFormInfo = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormInfo({...formInfo, [e.target.name]: e.target.value});
@@ -21,7 +22,7 @@ const CreatePost: React.FC = () => {
         axios.post(url, postData)
         .then((response) => {
             console.log(response.data);
-            alert('New post created with title: ');
+            alert('New post created with title: '+response.data.title);
         })
         .catch((error) => {
             if (error.response) {
@@ -32,6 +33,8 @@ const CreatePost: React.FC = () => {
                 console.log('Error', error.message);
             }
         });
+
+        navigate('/posts', {replace: true});
         
         e.preventDefault();
     };
@@ -63,7 +66,7 @@ const CreatePost: React.FC = () => {
                         required
                     ></textarea>
                 </div>
-                <input type='submit' value='Create'/>
+                <button type='submit' className='btn btn-secondary'>Create</button>
             </form>
         </div>
     );

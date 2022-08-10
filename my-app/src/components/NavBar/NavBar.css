@@ -13,3 +13,17 @@
 th {
     padding: 0 1rem;
 }
+
+.link-style {
+    text-decoration: none;
+    color: black;
+    border: solid black 1px;
+    border-radius: 0.3rem;
+    padding: 0.3rem;
+    transition: 0.1s linear;
+}
+
+.link-style:hover {
+    color: grey;
+    border-color: grey;
+}

@@ -5,6 +5,8 @@ import { CommentData, PostData } from '../../contracts/query';
 import useQuery from '../../hooks/useQuery';
 
 import Card from '../Card/Card';
+import ErrorBanner from '../ErrorBanner/ErrorBanner';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 const Post: React.FC = () => {
     const {id} = useParams();
@@ -14,25 +16,37 @@ const Post: React.FC = () => {
     const postQuery = useQuery<PostData>('https://jsonplaceholder.typicode.com/posts/'+id);
     const commentsQuery = useQuery<CommentData[]>('https://jsonplaceholder.typicode.com/posts/'+id+'/comments');
     
-    if (postQuery.error || commentsQuery.error) return <>Something went wrong!</>;
+    if (postQuery.error || commentsQuery.error) return <ErrorBanner message={postQuery.error + ' ' + commentsQuery.error} />;
 
-    if (postQuery.isLoading || commentsQuery.isLoading || !postQuery.data || !commentsQuery.data.length) return <>Loading...</>;
+    if (postQuery.isLoading || commentsQuery.isLoading) return <LoadingSpinner />;
 
     return (
         <div className='community'>
-            <h2>{postQuery.data.title}</h2>
-            <div>
-                {postQuery.data.body}
-            </div>
+
+            {
+            postQuery.data ?
+            <>
+                <h2>
+                    {postQuery.data.title}
+                </h2>
+                <div>
+                    {postQuery.data.body}
+                </div>
+            </>
+            : 'No results found.'
+            }
+
+            <br />
 
             <h3>Comments</h3>
 
             <div>
                 {
-                commentsQuery.data.slice(0,Math.min(limit,commentsQuery.data.length)).map(
-                    ({name, body, email, id}) =>
-                    <Card key={id} id={id} title={name} body={body} email={email}/>
-                )
+                commentsQuery.data ? commentsQuery.data.slice(0,Math.min(limit,commentsQuery.data.length)).map(
+                                         ({name, body, email, id}) =>
+                                         <Card key={id} id={id} title={name} body={body} email={email}/>
+                                     )
+                                   : 'No comments found.'
                 }
             </div>
         </div>

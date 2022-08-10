@@ -9,4 +9,9 @@ export type CommentData = {
     name: string,
     body: string,
     email: string
-}
+};
+
+export type BirdData = {
+    image: string,
+    fact: string
+};

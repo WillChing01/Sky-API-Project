@@ -1,18 +1,20 @@
 import React from 'react';
-import Card from '../Card/Card';
 import useQuery from '../../hooks/useQuery';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import Card from '../Card/Card';
+import ErrorBanner from '../ErrorBanner/ErrorBanner';
+import { PostData } from '../../contracts/query';
 
 import './Posts.css';
-import { PostData } from '../../contracts/query';
 
 const Posts: React.FC = () => {
     const url = 'https://jsonplaceholder.typicode.com/posts';
     const limit = 5;
     const {isLoading, data, error} = useQuery<PostData[]>(url);
 
-    if (error) return <>Something went wrong!</>;
+    if (error) return <ErrorBanner message={error} />;
 
-    if (isLoading) return <>Loading...</>;
+    if (isLoading) return <LoadingSpinner />;
 
     return (
         <div className='community'>

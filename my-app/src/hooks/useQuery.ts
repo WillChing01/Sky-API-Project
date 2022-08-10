@@ -5,7 +5,7 @@ type QueryResult<T> =  {isLoading: boolean; data: T; error: string;}
 
 const useQuery = <T>(url: string): QueryResult<T> => {
     const [data, setData] = useState<any>(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -24,7 +24,7 @@ const useQuery = <T>(url: string): QueryResult<T> => {
             } else {
                 console.log('Error', error.message);
             }
-            setError(error);
+            setError(error.message);
         });
     },[url]);
 

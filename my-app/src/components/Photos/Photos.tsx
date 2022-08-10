@@ -1,5 +1,7 @@
 import React from 'react';
 import useQuery from '../../hooks/useQuery';
+import ErrorBanner from '../ErrorBanner/ErrorBanner';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import PhotoCard from '../PhotoCard/PhotoCard';
 
 import './Photos.css';
@@ -17,9 +19,9 @@ const Photos: React.FC = () => {
     const limit = 50;
     const {isLoading, data, error} = useQuery<PhotoData[]>(url);
 
-    if (error) return <>Something went wrong!</>;
+    if (error) return <ErrorBanner message={error} />;
 
-    if (isLoading) return <>Loading...</>;
+    if (isLoading) return <LoadingSpinner />;
 
     return (
         <div className='community'>
@@ -27,7 +29,7 @@ const Photos: React.FC = () => {
             <div className='grid-container'>
                 {
                 data ? data.slice(0,Math.min(limit,data.length)).map(({thumbnailUrl}) => <PhotoCard key={thumbnailUrl} src={thumbnailUrl} />) 
-                    : 'No results found.'
+                     : 'No results found.'
                 }
             </div>
         </div>
