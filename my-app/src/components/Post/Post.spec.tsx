@@ -4,12 +4,18 @@ import { render, screen } from '@testing-library/react';
 import Post from './Post';
 import useQuery from '../../hooks/useQuery';
 import Card from '../Card/Card';
+import ErrorBanner from '../ErrorBanner/ErrorBanner';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 jest.mock('../../hooks/useQuery');
 jest.mock('../Card/Card');
+jest.mock('../ErrorBanner/ErrorBanner');
+jest.mock('../LoadingSpinner/LoadingSpinner');
 
 const mockQuery = useQuery as jest.MockedFunction<typeof useQuery>;
 const mockCard = Card as jest.MockedFunction<typeof Card>;
+const mockErrorBanner = ErrorBanner as jest.MockedFunction<typeof ErrorBanner>;
+const mockLoadingSpinner = LoadingSpinner as jest.MockedFunction<typeof LoadingSpinner>;
 
 describe('Post', () => {
     it('should display error message if API returns error', () => {
@@ -18,10 +24,13 @@ describe('Post', () => {
             data: null,
             error: 'Error!'
         });
+        mockErrorBanner.mockReturnValue(
+            <>Error!</>
+        );
 
         render(<Post />);
 
-        const error = screen.getByText('Something went wrong!');
+        const error = screen.getByText('Error!');
         expect(error).toBeInTheDocument();
     });
 
@@ -31,6 +40,9 @@ describe('Post', () => {
             data: null,
             error: ''
         });
+        mockLoadingSpinner.mockReturnValue(
+            <>Loading...</>
+        );
 
         render(<Post />);
 

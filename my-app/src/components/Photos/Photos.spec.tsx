@@ -3,14 +3,20 @@ import { render, screen } from '@testing-library/react';
 
 import Photos from './Photos';
 import PhotoCard from '../PhotoCard/PhotoCard';
+import ErrorBanner from '../ErrorBanner/ErrorBanner';
 
 import useQuery from '../../hooks/useQuery';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 jest.mock('../../hooks/useQuery');
 jest.mock('../PhotoCard/PhotoCard');
+jest.mock('../ErrorBanner/ErrorBanner');
+jest.mock('../LoadingSpinner/LoadingSpinner');
 
 const mockQuery = useQuery as jest.MockedFunction<typeof useQuery>;
 const mockPhotoCard = PhotoCard as jest.MockedFunction<typeof PhotoCard>;
+const mockErrorBanner = ErrorBanner as jest.MockedFunction<typeof ErrorBanner>;
+const mockLoadingSpinner = LoadingSpinner as jest.MockedFunction<typeof LoadingSpinner>;
 
 describe('Photos', () => {
     it('should display error message if API returns error', () => {
@@ -19,10 +25,13 @@ describe('Photos', () => {
             data: null,
             error: 'Error!'
         });
+        mockErrorBanner.mockReturnValue(
+            <>Error!</>
+        );
 
         render(<Photos />);
 
-        const error = screen.getByText('Something went wrong!');
+        const error = screen.getByText('Error!');
         expect(error).toBeInTheDocument();
     });
 
@@ -32,6 +41,9 @@ describe('Photos', () => {
             data: null,
             error: ''
         });
+        mockLoadingSpinner.mockReturnValue(
+            <>Loading...</>
+        );
 
         render(<Photos />);
 

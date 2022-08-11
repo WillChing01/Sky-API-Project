@@ -5,12 +5,18 @@ import Posts from './Posts';
 import Card from '../Card/Card';
 
 import useQuery from '../../hooks/useQuery';
+import ErrorBanner from '../ErrorBanner/ErrorBanner';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 jest.mock('../../hooks/useQuery');
 jest.mock('../Card/Card');
+jest.mock('../ErrorBanner/ErrorBanner');
+jest.mock('../LoadingSpinner/LoadingSpinner');
 
 const mockQuery = useQuery as jest.MockedFunction<typeof useQuery>;
 const mockCard = Card as jest.MockedFunction<typeof Card>;
+const mockErrorBanner = ErrorBanner as jest.MockedFunction<typeof ErrorBanner>;
+const mockLoadingSpinner = LoadingSpinner as jest.MockedFunction<typeof LoadingSpinner>;
 
 describe('Posts', () => {
     it('should display error message if API returns error', () => {
@@ -19,10 +25,13 @@ describe('Posts', () => {
             data: null,
             error: 'Error!'
         });
+        mockErrorBanner.mockReturnValue(
+            <>Error!</>
+        );
 
         render(<Posts />);
 
-        const error = screen.getByText('Something went wrong!');
+        const error = screen.getByText('Error!');
         expect(error).toBeInTheDocument();
     });
 
@@ -32,6 +41,9 @@ describe('Posts', () => {
             data: null,
             error: ''
         });
+        mockLoadingSpinner.mockReturnValue(
+            <>Loading...</>
+        );
 
         render(<Posts />);
 
