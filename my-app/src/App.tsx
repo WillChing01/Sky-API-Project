@@ -9,12 +9,13 @@ import CreatePost from './components/CreatePost/CreatePost';
 import Photos from './components/Photos/Photos';
 
 import './App.css';
+import ResponsiveAppBar from './components/ResponsiveAppBar/ResponsiveAppBar';
 
 const App: React.FC = () => {
     return (
         <BrowserRouter>
-            <NavBar />
-            <div className='padded-space'>
+            <ResponsiveAppBar />
+            <div>
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='/posts' element={<Posts />} />

@@ -1,32 +1,22 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import Home from './Home';
 import useQuery from '../../hooks/useQuery';
-import ErrorBanner from '../ErrorBanner/ErrorBanner';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
-import PhotoCard from '../PhotoCard/PhotoCard';
 
 jest.mock('../../hooks/useQuery');
-jest.mock('../ErrorBanner/ErrorBanner');
-jest.mock('../LoadingSpinner/LoadingSpinner');
-jest.mock('../PhotoCard/PhotoCard');
 
 const mockQuery = useQuery as jest.MockedFunction<typeof useQuery>;
-const mockErrorBanner = ErrorBanner as jest.MockedFunction<typeof ErrorBanner>;
-const mockLoadingSpinner = LoadingSpinner as jest.MockedFunction<typeof LoadingSpinner>;
-const mockPhotoCard = PhotoCard as jest.MockedFunction<typeof PhotoCard>;
+const mockRefetch = jest.fn();
 
 describe('Home', () => {
     it('should display error message if API returns error', () => {
         mockQuery.mockReturnValue({
             isLoading: false,
             data: null,
-            error: 'Error!'
+            error: 'Error!',
+            refetch: mockRefetch
         });
-        mockErrorBanner.mockReturnValue(
-            <>Error!</>
-        );
 
         render(<Home />);
 
@@ -38,15 +28,13 @@ describe('Home', () => {
         mockQuery.mockReturnValue({
             isLoading: true,
             data: null,
-            error: ''
+            error: '',
+            refetch: mockRefetch
         });
-        mockLoadingSpinner.mockReturnValue(
-            <>Loading...</>
-        );
 
         render(<Home />);
 
-        const loading = screen.getByText('Loading...');
+        const loading = screen.getByTestId('loading-spinner');
         expect(loading).toBeInTheDocument();
     });
 
@@ -57,11 +45,9 @@ describe('Home', () => {
                 image: '',
                 fact: ''
             },
-            error: ''
+            error: '',
+            refetch: mockRefetch
         });
-        mockPhotoCard.mockReturnValue(
-            <></>
-        );
 
         render(<Home />);
         
@@ -74,7 +60,8 @@ describe('Home', () => {
         mockQuery.mockReturnValue({
             isLoading: false,
             data: null,
-            error: ''
+            error: '',
+            refetch: mockRefetch
         });
         
         render(<Home />);
@@ -88,22 +75,39 @@ describe('Home', () => {
             isLoading: false,
             data: {
                 image: 'image-src',
-                fact: 'fact'
+                fact: 'img-fact'
             },
-            error: ''
+            error: '',
+            refetch: mockRefetch
         });
-        mockPhotoCard.mockReturnValue(
-            <>
-                <img src='image-src' />
-                <div data-testid='img-fact'>fact</div>
-            </>
-        );
 
         render(<Home />);
 
         const photo = screen.getByRole('img');
-        const photoFact = screen.getByTestId('img-fact');
+        const photoFact = screen.getByText('img-fact');
         expect(photo).toHaveAttribute('src','image-src');
-        expect(photoFact).toHaveTextContent('fact');
+        expect(photoFact).toBeInTheDocument();
+    });
+
+    it('should refetch data on button click', () => {
+        mockQuery.mockReturnValue({
+            isLoading: false,
+            data: {
+                image: 'image-src',
+                fact: 'img-fact'
+            },
+            error: '',
+            refetch: mockRefetch
+        });
+
+        render(<Home />);
+        const button = screen.getByRole('button');
+        fireEvent.click(button);
+
+        const photo = screen.getByRole('img');
+        const photoFact = screen.getByText('img-fact');
+        expect(photo).toHaveAttribute('src','image-src');
+        expect(photoFact).toBeInTheDocument();
+        expect(mockRefetch).toHaveBeenCalled();
     });
 })

@@ -4,7 +4,7 @@ import { CommentData, PostData } from '../../contracts/query';
 
 import useQuery from '../../hooks/useQuery';
 
-import Card from '../Card/Card';
+import Card from '../Card/PostCard';
 import ErrorBanner from '../ErrorBanner/ErrorBanner';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 

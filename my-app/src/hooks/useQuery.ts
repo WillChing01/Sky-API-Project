@@ -1,14 +1,14 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios';
 
-type QueryResult<T> =  {isLoading: boolean; data: T; error: string;}
+type QueryResult<T> =  {isLoading: boolean; data: T; error: string; refetch: () => void;}
 
 const useQuery = <T>(url: string): QueryResult<T> => {
     const [data, setData] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
 
-    useEffect(() => {
+    const fetch = () => {
         setIsLoading(true);
         axios.get(url)
         .then((response) => {
@@ -26,12 +26,17 @@ const useQuery = <T>(url: string): QueryResult<T> => {
             }
             setError(error.message);
         });
+    };
+
+    useEffect(() => {
+        fetch();
     },[url]);
 
     return {
         isLoading: isLoading,
         data: data,
-        error: error
+        error: error,
+        refetch: fetch
     };
 };
 

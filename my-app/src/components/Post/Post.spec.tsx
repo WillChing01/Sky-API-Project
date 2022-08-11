@@ -1,128 +1,128 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
+// import React from 'react';
+// import { render, screen } from '@testing-library/react';
 
-import Post from './Post';
-import useQuery from '../../hooks/useQuery';
-import Card from '../Card/Card';
-import ErrorBanner from '../ErrorBanner/ErrorBanner';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+// import Post from './Post';
+// import useQuery from '../../hooks/useQuery';
+// import Card from '../Card/Card';
+// import ErrorBanner from '../ErrorBanner/ErrorBanner';
+// import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
-jest.mock('../../hooks/useQuery');
-jest.mock('../Card/Card');
-jest.mock('../ErrorBanner/ErrorBanner');
-jest.mock('../LoadingSpinner/LoadingSpinner');
+// jest.mock('../../hooks/useQuery');
+// jest.mock('../Card/Card');
+// jest.mock('../ErrorBanner/ErrorBanner');
+// jest.mock('../LoadingSpinner/LoadingSpinner');
 
-const mockQuery = useQuery as jest.MockedFunction<typeof useQuery>;
-const mockCard = Card as jest.MockedFunction<typeof Card>;
-const mockErrorBanner = ErrorBanner as jest.MockedFunction<typeof ErrorBanner>;
-const mockLoadingSpinner = LoadingSpinner as jest.MockedFunction<typeof LoadingSpinner>;
+// const mockQuery = useQuery as jest.MockedFunction<typeof useQuery>;
+// const mockCard = Card as jest.MockedFunction<typeof Card>;
+// const mockErrorBanner = ErrorBanner as jest.MockedFunction<typeof ErrorBanner>;
+// const mockLoadingSpinner = LoadingSpinner as jest.MockedFunction<typeof LoadingSpinner>;
 
-describe('Post', () => {
-    it('should display error message if API returns error', () => {
-        mockQuery.mockReturnValue({
-            isLoading: false,
-            data: null,
-            error: 'Error!'
-        });
-        mockErrorBanner.mockReturnValue(
-            <>Error!</>
-        );
+// describe('Post', () => {
+//     it('should display error message if API returns error', () => {
+//         mockQuery.mockReturnValue({
+//             isLoading: false,
+//             data: null,
+//             error: 'Error!'
+//         });
+//         mockErrorBanner.mockReturnValue(
+//             <>Error!</>
+//         );
 
-        render(<Post />);
+//         render(<Post />);
 
-        const error = screen.getByText('Error!');
-        expect(error).toBeInTheDocument();
-    });
+//         const error = screen.getByText('Error!');
+//         expect(error).toBeInTheDocument();
+//     });
 
-    it('should display loading message if data is not loaded', () => {
-        mockQuery.mockReturnValue({
-            isLoading: true,
-            data: null,
-            error: ''
-        });
-        mockLoadingSpinner.mockReturnValue(
-            <>Loading...</>
-        );
+//     it('should display loading message if data is not loaded', () => {
+//         mockQuery.mockReturnValue({
+//             isLoading: true,
+//             data: null,
+//             error: ''
+//         });
+//         mockLoadingSpinner.mockReturnValue(
+//             <>Loading...</>
+//         );
 
-        render(<Post />);
+//         render(<Post />);
 
-        const loading = screen.getByText('Loading...');
-        expect(loading).toBeInTheDocument();
-    });
+//         const loading = screen.getByText('Loading...');
+//         expect(loading).toBeInTheDocument();
+//     });
 
-    it('should display relevant messages if data is not present', () => {
-        mockQuery.mockReturnValue({
-            isLoading: false,
-            data: null,
-            error: ''
-        });
-        mockCard.mockReturnValue(<></>);
+//     it('should display relevant messages if data is not present', () => {
+//         mockQuery.mockReturnValue({
+//             isLoading: false,
+//             data: null,
+//             error: ''
+//         });
+//         mockCard.mockReturnValue(<></>);
 
-        render(<Post />);
+//         render(<Post />);
 
-        const postMessage = screen.getByText('No results found.');
-        const commentsMessage = screen.getByText('No comments found.');
-        expect(postMessage).toBeInTheDocument();
-        expect(commentsMessage).toBeInTheDocument();
-    });
+//         const postMessage = screen.getByText('No results found.');
+//         const commentsMessage = screen.getByText('No comments found.');
+//         expect(postMessage).toBeInTheDocument();
+//         expect(commentsMessage).toBeInTheDocument();
+//     });
 
-    it('should display post title and body when returned from API', () => {
-        mockQuery.mockReturnValueOnce({
-            isLoading: false,
-            data: {
-                title: 'post-title',
-                body: 'post-body',
-                id: 0
-            },
-            error: ''
-        });
-        mockQuery.mockReturnValueOnce({
-            isLoading: false,
-            data: [],
-            error: ''
-        });
+//     it('should display post title and body when returned from API', () => {
+//         mockQuery.mockReturnValueOnce({
+//             isLoading: false,
+//             data: {
+//                 title: 'post-title',
+//                 body: 'post-body',
+//                 id: 0
+//             },
+//             error: ''
+//         });
+//         mockQuery.mockReturnValueOnce({
+//             isLoading: false,
+//             data: [],
+//             error: ''
+//         });
         
-        render(<Post />);
+//         render(<Post />);
 
-        const postTitle = screen.getByText('post-title');
-        const postBody = screen.getByText('post-body');
-        expect(postTitle).toBeInTheDocument();
-        expect(postBody).toBeInTheDocument();
-    });
+//         const postTitle = screen.getByText('post-title');
+//         const postBody = screen.getByText('post-body');
+//         expect(postTitle).toBeInTheDocument();
+//         expect(postBody).toBeInTheDocument();
+//     });
 
-    it('should display a comment when returned from the API', () => {
-        mockQuery.mockReturnValueOnce({
-            isLoading: false,
-            data: null,
-            error: ''
-        });
-        mockQuery.mockReturnValueOnce({
-            isLoading: false,
-            data: [{
-                id: 0,
-                name: 'comment-name',
-                body: 'comment-body',
-                email: 'comment-email',
-            }],
-            error: ''
-        });
-        mockCard.mockReturnValue(
-            <>
-                <div>comment-name</div>
-                <div>comment-body</div>
-                <div>comment-email</div>
-            </>
-        );
+//     it('should display a comment when returned from the API', () => {
+//         mockQuery.mockReturnValueOnce({
+//             isLoading: false,
+//             data: null,
+//             error: ''
+//         });
+//         mockQuery.mockReturnValueOnce({
+//             isLoading: false,
+//             data: [{
+//                 id: 0,
+//                 name: 'comment-name',
+//                 body: 'comment-body',
+//                 email: 'comment-email',
+//             }],
+//             error: ''
+//         });
+//         mockCard.mockReturnValue(
+//             <>
+//                 <div>comment-name</div>
+//                 <div>comment-body</div>
+//                 <div>comment-email</div>
+//             </>
+//         );
 
-        render(<Post />);
+//         render(<Post />);
         
-        const commentHeader = screen.getByText('Comments');
-        const commentTitle = screen.getByText('comment-name');
-        const commentBody = screen.getByText('comment-body');
-        const commentEmail = screen.getByText('comment-email');
-        expect(commentHeader).toBeInTheDocument();
-        expect(commentTitle).toBeInTheDocument();
-        expect(commentBody).toBeInTheDocument();
-        expect(commentEmail).toBeInTheDocument();
-    });
-});
+//         const commentHeader = screen.getByText('Comments');
+//         const commentTitle = screen.getByText('comment-name');
+//         const commentBody = screen.getByText('comment-body');
+//         const commentEmail = screen.getByText('comment-email');
+//         expect(commentHeader).toBeInTheDocument();
+//         expect(commentTitle).toBeInTheDocument();
+//         expect(commentBody).toBeInTheDocument();
+//         expect(commentEmail).toBeInTheDocument();
+//     });
+// });
