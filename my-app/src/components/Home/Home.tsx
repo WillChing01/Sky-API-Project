@@ -1,11 +1,10 @@
 import React from 'react';
 import { BirdData } from '../../contracts/query';
-import LoadingButton from '@mui/lab/LoadingButton';
 
 import useQuery from '../../hooks/useQuery';
 import ErrorBanner from '../ErrorBanner/ErrorBanner';
 import PhotoCard from '../PhotoCard/PhotoCard';
-import { Container } from '@mui/material';
+import { Box, Container } from '@mui/material';
 
 const Home: React.FC = () => {
 
@@ -16,10 +15,15 @@ const Home: React.FC = () => {
 
     return (
         <Container maxWidth='md'>
-            <h1 className='title' data-testid='title'>Welcome!</h1>
+        <h1 className='title' data-testid='title'>Welcome!</h1>
+        <Box
+            display='flex'
+            justifyContent='center'
+            alignItems='center'
+        >
             {
             data && 
-            <PhotoCard 
+            <PhotoCard
                 src={data.image}
                 title='Bird'
                 body={data.fact}
@@ -28,6 +32,7 @@ const Home: React.FC = () => {
                 isLoading={isLoading}
             />
             }
+        </Box>
         </Container>
     );
 };

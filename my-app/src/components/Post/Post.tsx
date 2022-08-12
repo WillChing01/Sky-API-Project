@@ -3,9 +3,10 @@ import { useParams } from 'react-router-dom';
 import { CommentData, PostData } from '../../contracts/query';
 
 import useQuery from '../../hooks/useQuery';
+import PostCard from '../Card/PostCard';
 
-import Card from '../Card/PostCard';
 import ErrorBanner from '../ErrorBanner/ErrorBanner';
+import LoadingPostCard from '../LoadingPostCard/LoadingPostCard';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 const Post: React.FC = () => {
@@ -17,8 +18,6 @@ const Post: React.FC = () => {
     const commentsQuery = useQuery<CommentData[]>('https://jsonplaceholder.typicode.com/posts/'+id+'/comments');
     
     if (postQuery.error || commentsQuery.error) return <ErrorBanner message={postQuery.error + ' ' + commentsQuery.error} />;
-
-    if (postQuery.isLoading || commentsQuery.isLoading) return <LoadingSpinner />;
 
     return (
         <div className='community'>
@@ -33,7 +32,7 @@ const Post: React.FC = () => {
                     {postQuery.data.body}
                 </div>
             </>
-            : 'No results found.'
+            : <LoadingPostCard number={1} />
             }
 
             <br />
@@ -44,9 +43,9 @@ const Post: React.FC = () => {
                 {
                 commentsQuery.data ? commentsQuery.data.slice(0,Math.min(limit,commentsQuery.data.length)).map(
                                          ({name, body, email, id}) =>
-                                         <Card key={id} id={id} title={name} body={body} email={email}/>
+                                         <PostCard key={id} id={id} title={name} body={body} email={email} />
                                      )
-                                   : 'No comments found.'
+                                   : <LoadingPostCard number={3} />
                 }
             </div>
         </div>

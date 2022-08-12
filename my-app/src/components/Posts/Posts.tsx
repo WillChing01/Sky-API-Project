@@ -1,12 +1,11 @@
 import React from 'react';
 import useQuery from '../../hooks/useQuery';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import PostCard from '../Card/PostCard';
 import ErrorBanner from '../ErrorBanner/ErrorBanner';
 import { PostData } from '../../contracts/query';
 
 import './Posts.css';
-import { Container, Skeleton } from '@mui/material';
+import { Container } from '@mui/material';
 import LoadingPostCard from '../LoadingPostCard/LoadingPostCard';
 
 const Posts: React.FC = () => {
@@ -20,7 +19,7 @@ const Posts: React.FC = () => {
         <Container maxWidth='md'>
             <h1 className='title' data-testid='title'>Posts</h1>
             {
-            !isLoading ? data.slice(0,Math.min(limit,data.length)).map(({title, body, id}) => <PostCard key={String(id)} id={id} title={title} body={body} email={''} />) 
+            !isLoading ? data.slice(0,Math.min(limit,data.length)).map(({title, body, id}) => <PostCard key={String(id)} id={id} title={title} body={body} email={''} linkCaption='Read more' linkRoute={'/posts/'+id} />) 
                        : <LoadingPostCard number={limit}/>
             }
         </Container>

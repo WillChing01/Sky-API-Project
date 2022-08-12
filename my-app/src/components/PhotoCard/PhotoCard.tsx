@@ -42,6 +42,7 @@ const PhotoCard: React.FC<Props> = ({src, title, body, actionCaption, action = (
                 size='small'
                 variant='contained'
                 onClick={() => action()}
+                color='inherit'
             >{actionCaption}</LoadingButton>
             </CardActions>
             }
